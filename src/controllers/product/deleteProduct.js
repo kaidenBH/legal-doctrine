@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Product = require('../../models/product')
+const Review = require('../../models/review')
 
 const deleteProduct = async (req, res) => {
   try {
@@ -17,7 +18,7 @@ const deleteProduct = async (req, res) => {
     if (userId.toString() !== existingproduct.ownerId.toString()) {
       return res.status(403).json({ message: 'Invalid request' })
     }
-
+    await Review.deleteMany({ productId: _id })
     await Product.deleteOne({ _id })
 
     return res.status(200).json({ message: 'deleted product successfully' })
