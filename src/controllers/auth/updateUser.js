@@ -6,9 +6,6 @@ const { validateEmail, validatePassword, validateUserType } = require('../../ser
 
 const updateUser = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(403).json({ message: 'Invalid request' })
-    }
     const userId = req.user.id
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -20,13 +17,13 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'user do not exists.' })
     }
 
-    const { email, oldPassword, newPassword, confirmsNewPassword, firstName, lastName, profilePicture, userType } = req.body
+    const { email, confirmPassword, newPassword, confirmNewPassword, firstName, lastName, profilePicture, userType } = req.body
 
-    if (!oldPassword) {
+    if (!confirmPassword) {
       return res.status(400).json({ message: 'invalid credentials.' })
     }
 
-    const isPassowrdCorrect = await bcrypt.compare(oldPassword, existingUser.password)
+    const isPassowrdCorrect = await bcrypt.compare(confirmPassword, existingUser.password)
 
     if (!isPassowrdCorrect) {
       return res.status(400).json({ message: 'Invalid credentials.' })
@@ -50,7 +47,7 @@ const updateUser = async (req, res) => {
       if (!validatePassword(newPassword)) {
         return res.status(400).json({ message: 'invalid new Password.' })
       }
-      if (!confirmsNewPassword || newPassword !== confirmsNewPassword) {
+      if (!confirmNewPassword || newPassword !== confirmNewPassword) {
         return res.status(400).json({ message: 'Invalid credentials.' })
       }
       updateFields.password = await bcrypt.hash(newPassword, 12)
@@ -69,7 +66,7 @@ const updateUser = async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(userId, updateFields, { new: true })
 
-    const { _id, verificationToken, password, ...userDetails } = updatedUser.toObject()
+    const { _id, password, ...userDetails } = updatedUser.toObject()
     const token = jwt.sign({ email: updatedUser.email, id: updatedUser._id }, process.env.SECRET_TOKEN, { expiresIn: '7d' })
 
     return res.status(200).json({ userDetails, token })

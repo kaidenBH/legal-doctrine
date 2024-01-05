@@ -16,7 +16,7 @@ app.use(cors())
 app.use('/', route)
 
 const PORT = process.env.PORT || 5000
-const MONGO_URI = process.env.MONGODB_URI
+const MONGO_URI = process.env.DB_URI
 
 mongoose.connect(MONGO_URI)
   .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))

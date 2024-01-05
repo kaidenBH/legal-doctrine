@@ -3,9 +3,6 @@ const User = require('../../models/user')
 
 const refreshToken = async (req, res) => {
   try {
-    if (!req.user) {
-      return res.status(403).json({ message: 'Invalid request' })
-    }
     const userId = req.user.id
 
     const existinguser = await User.findById(userId)
@@ -15,7 +12,7 @@ const refreshToken = async (req, res) => {
     }
 
     const token = jwt.sign({ email: existinguser.email, id: existinguser._id }, process.env.SECRET_TOKEN, { expiresIn: '7d' })
-    const { _id, verificationToken, password, ...userDetails } = existinguser.toObject()
+    const { _id, password, ...userDetails } = existinguser.toObject()
     return res.status(200).json({ userDetails, token })
   } catch (error) {
     return res.status(403).json({ message: 'Invalid refresh token.' })

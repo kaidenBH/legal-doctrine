@@ -30,7 +30,7 @@ const signUp = async (req, res) => {
     const result = await User.create({ firstName, lastName, email, userType, password: hashPassowrd })
 
     const token = jwt.sign({ email: result.email, id: result._id }, process.env.SECRET_TOKEN, { expiresIn: '7d' })
-    const { _id, verificationToken, password, ...userDetails } = result.toObject()
+    const { _id, password, ...userDetails } = result.toObject()
     return res.status(200).json({ userDetails, token })
   } catch (error) {
     return res.status(500).json({ message: 'Something went wrong in server' })

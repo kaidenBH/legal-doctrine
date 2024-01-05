@@ -22,7 +22,7 @@ const signIn = async (req, res) => {
     }
 
     const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, process.env.SECRET_TOKEN, { expiresIn: '7d' })
-    const { _id, verificationToken, password, ...userDetails } = existingUser.toObject()
+    const { _id, password, ...userDetails } = existingUser.toObject()
 
     return res.status(200).json({ userDetails, token })
   } catch (error) {
