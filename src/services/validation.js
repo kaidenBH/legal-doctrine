@@ -9,17 +9,7 @@ const validatePassword = (password) => {
   return passwordRegex.test(password)
 }
 
-const validateUserType = (userType) => {
-  try {
-    const allowedTypes = ['Buyer', 'Seller', 'Both']
-    return allowedTypes.includes(userType)
-  } catch (e) {
-    return false
-  }
-}
-
 module.exports = {
   validateEmail,
-  validatePassword,
-  validateUserType
+  validatePassword
 }

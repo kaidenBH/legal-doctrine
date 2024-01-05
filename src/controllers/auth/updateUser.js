@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
-const { validateEmail, validatePassword, validateUserType } = require('../../services/validation')
+const { validateEmail, validatePassword } = require('../../services/validation')
 
 const updateUser = async (req, res) => {
   try {
@@ -17,7 +17,7 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: 'user do not exists.' })
     }
 
-    const { email, confirmPassword, newPassword, confirmNewPassword, firstName, lastName, profilePicture, userType } = req.body
+    const { email, confirmPassword, newPassword, confirmNewPassword, firstName, lastName, profilePicture } = req.body
 
     if (!confirmPassword) {
       return res.status(400).json({ message: 'invalid credentials.' })
@@ -56,13 +56,6 @@ const updateUser = async (req, res) => {
     if (firstName) updateFields.firstName = firstName
     if (lastName) updateFields.lastName = lastName
     if (profilePicture) updateFields.profilePicture = profilePicture
-
-    if (userType) {
-      if (!validateUserType(userType)) {
-        return res.status(400).json({ message: 'invalid User Type.' })
-      }
-      updateFields.userType = userType
-    }
 
     const updatedUser = await User.findByIdAndUpdate(userId, updateFields, { new: true })
 

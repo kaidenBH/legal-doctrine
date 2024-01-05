@@ -1,17 +1,17 @@
 const jwt = require('jsonwebtoken')
 const User = require('../../models/user')
 const bcrypt = require('bcryptjs')
-const { validateEmail, validatePassword, validateUserType } = require('../../services/validation')
+const { validateEmail, validatePassword } = require('../../services/validation')
 
 const signUp = async (req, res) => {
   try {
-    const { email, password: pass, confirmPassword, firstName, lastName, userType } = req.body
+    const { email, password: pass, confirmPassword, firstName, lastName } = req.body
 
-    if (!email || !pass || !firstName || !lastName || !userType) {
+    if (!email || !pass || !firstName || !lastName) {
       return res.status(400).json({ message: 'Fill the required fields.' })
     }
 
-    if (!validateEmail(email) || !validatePassword(pass) || !validateUserType(userType)) {
+    if (!validateEmail(email) || !validatePassword(pass)) {
       return res.status(400).json({ message: 'invalid credentials.' })
     }
 
@@ -27,7 +27,7 @@ const signUp = async (req, res) => {
 
     const hashPassowrd = await bcrypt.hash(pass, 12)
 
-    const result = await User.create({ firstName, lastName, email, userType, password: hashPassowrd })
+    const result = await User.create({ firstName, lastName, email, password: hashPassowrd })
 
     const token = jwt.sign({ email: result.email, id: result._id }, process.env.SECRET_TOKEN, { expiresIn: '7d' })
     const { _id, password, ...userDetails } = result.toObject()
