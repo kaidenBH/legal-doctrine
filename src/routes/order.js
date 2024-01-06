@@ -5,6 +5,6 @@ const auth = require('../middleware/auth')
 router.post('/:productId', auth, orderController.purchaseProduct)
 router.patch('/shipment/:orderId', auth, orderController.shipOrder)
 router.get('/userPurchases', auth, orderController.userPurchases)
-//  router.get('/stats', auth, orderController.purchaseStats)
+router.get('/stats', orderController.purchaseStats)
 
 module.exports = router

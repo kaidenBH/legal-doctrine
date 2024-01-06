@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
 },
 {
   timestamps: {
-    order_date: 'created_at',
+    createdAt: 'created_at',
     updatedAt: 'updated_at'
   }
 })
