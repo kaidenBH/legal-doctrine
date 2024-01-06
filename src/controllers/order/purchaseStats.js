@@ -1,6 +1,6 @@
 const Product = require('../../models/product')
 const Order = require('../../models/order')
-const purchaseTrendsService = require('../../services/purchaseTrendsService')
+const { getPurchaseTrends } = require('../../services/purchaseTrends')
 const moment = require('moment')
 
 const purchaseStats = async (req, res) => {
@@ -21,7 +21,7 @@ const purchaseStats = async (req, res) => {
       .limit(10)
 
     const timePeriod = moment().subtract(1, 'month')
-    const purchaseTrends = await purchaseTrendsService.getPurchaseTrends(timePeriod, 10)
+    const purchaseTrends = await getPurchaseTrends(timePeriod, 10)
 
     return res.status(200).json({ totalPurchases, topSellingProducts, purchaseTrends })
   } catch (error) {

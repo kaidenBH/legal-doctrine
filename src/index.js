@@ -4,10 +4,13 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const route = require('./routes/routes')
 const dotenv = require('dotenv')
-//  const {createFakeUsers, createFakeShops, createFakeProducts} = require('./src/test');
+// eslint-disable-next-line no-unused-vars
+const populateDatabase = require('./tests/populateDatabase')
 
 const app = express()
 dotenv.config()
+
+populateDatabase(100)
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))

@@ -1,6 +1,6 @@
 const Order = require('../models/order')
 
-async function getPurchaseTrends (timePeriod, productsLimit = 10) {
+const getPurchaseTrends = async (timePeriod, productsLimit = 10) => {
   try {
     const trendingPurchases = await Order.aggregate([
       {
