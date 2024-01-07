@@ -4,8 +4,9 @@ const getUsers = require('./users')
 const getProducts = require('./products')
 const getOrders = require('./oreders')
 
-const populateDatabase = async (numberOfEntities = 10) => {
+const populateDatabase = async (req, res) => {
   try {
+    const numberOfEntities = req.query.size
     const creditCards = await getVisaCards(numberOfEntities)
     const tokens = await getUsers(creditCards)
     const products = await getProducts(tokens)
@@ -14,9 +15,10 @@ const populateDatabase = async (numberOfEntities = 10) => {
     // console.log(tokens)
     // console.log(products)
     // console.log(orders)
+    return res.status(200).json({ creditCards, tokens, products, orders })
   } catch (error) {
     console.log(error)
-    throw new Error('Failed to populate database')
+    return res.status(500).json({ message: 'Something went wrong in server' })
   }
 }
 

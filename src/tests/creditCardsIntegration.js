@@ -17,9 +17,9 @@ const getVisaCards = async (numberOfCards = 10) => {
         .map(({ credit_card_number, ...rest }) => rest)
       visaCards = visaCards.concat(filteredVisa)
     }
-
-    console.log('\u2713 ', numberOfCards, ' Credit Cards Were Created')
-    return visaCards.slice(0, numberOfCards)
+    const cleanCards = visaCards.slice(0, numberOfCards)
+    console.log('\u2713 ', cleanCards.length, ' Credit Cards Were Created')
+    return cleanCards
   } catch (error) {
     console.log(error)
     throw new Error('Failed to fetch credit cards')
