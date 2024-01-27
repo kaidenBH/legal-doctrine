@@ -1,4 +1,3 @@
-DON'T change anything but the typos here 
 # Backend app made with Node.js and MongoDB for Product Management
 ## Overview:
 
